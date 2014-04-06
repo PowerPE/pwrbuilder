@@ -1,8 +1,7 @@
 ﻿# Check and Setup System Requirements
 
 # Load Needed Components
-Import-Module ShowUI -MinimumVersion 1.5.1
-
+Import-Module ShowUI
 
 #Load Base UI
 RibbonWindow { 
