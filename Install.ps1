@@ -17,54 +17,40 @@
 #>
  
 #---------------------------------------------------------[Initialisations]--------------------------------------------------------
- 
-#Set Error Action to Silently Continue
-$ErrorActionPreference = "SilentlyContinue"
+$ErrorActionPreference = "Stop"
  
 #Dot Source required Function Libraries
-. "$PSScriptRoot\Diagnostics\Logging_Functions.ps1"
- 
+. "$PSScriptRoot\Diagnostic\Logging_Functions.ps1"
+. "$PSScriptRoot\Deps\Directories.dep.ps1"
+. "$PSScriptRoot\Deps\pwrbldr.dep.ps1"
+       
 #----------------------------------------------------------[Declarations]----------------------------------------------------------
  
 #Script Version
 $sScriptVersion = "0.1"
  
 #Log File Info
-$sLogPath = "$env:UserProfile\PowerShell\PwrBuilder\log"
+$sLogPath = $env:USERPROFILE + "\PowerShell\PwrBuilder\log"
 $sLogName = "Install.log"
 $sLogFile = $sLogPath + "\" + $sLogName
- 
+
+#Dep Dir
+$PwrBldrDeps = $PwrBldrModuleRoot + "\Deps"
+
 #-----------------------------------------------------------[Functions]------------------------------------------------------------
   
-Function Install-PwrBuilder{
+Function Install-PwrBldr{
   
   Begin{
-    Log-Write -LogPath $sLogFile -LineValue "Install PwrBuilder"
+    
+    Log-Write -LogPath $sLogFile -LineValue "Installing PwrBuilder"
   }
   
   Process{
     Try{
-      if(-not (Get-Module -Name PsBabushka)) {
-        Install-Module PSBabushka
-      }
-      . "$PSScriptRoot\Deps\ShowUI_Installed.dep.ps1"
-      . "$PSScriptRoot\Deps\ShowUI_Ribbon_Installed.dep.ps1"
-      . "$PSScriptRoot\Deps\PsConfig_Installed.dep.ps1"
-      . "$PSScriptRoot\Deps\PsJson_Installed.dep.ps1"
-      . "$PSScriptRoot\Deps\PsEnv_Installed.dep.ps1"
-      . "$PSScriptRoot\Deps\PsWatch_Installed.dep.ps1"
-      . "$PSScriptRoot\Deps\PsUrl_Installed.dep.ps1"
-      . "$PSScriptRoot\Deps\PowerYaml_Installed.dep.ps1"
-      . "$PSScriptRoot\Deps\Autoload_Installed.dep.ps1"
-      Invoke-PSBabushka 'ShowUI-Installed'
-      Invoke-PSBabushka 'ShowUI_Ribbon-Installed'
-      Invoke-PSBabushka 'PsConfig-Installed'
-      Invoke-PSBabushka 'PsJson-Installed'
-      Invoke-PSBabushka 'PsEnv-Installed'
-      Invoke-PSBabushka 'PsWatch-Installed'
-      Invoke-PSBabushka 'Autoload-Installed'
-      Invoke-PSBabushka 'PsUrl-Installed'
-      Invoke-PSBabushka 'PowerYaml-Installed'
+      Install-PwrBldrDirectories
+      Install-PwrBldrDeps
+      
       $executionPolicy  = (Get-ExecutionPolicy)
       $executionRestricted = ($executionPolicy -eq "Restricted")
       if ($executionRestricted){
@@ -95,16 +81,15 @@ For more information execute:
   
   End{
     If($?){
-      Log-Write -LogPath $sLogFile -LineValue "Completed Successfully."
+      Log-Write -LogPath $sLogFile -LineValue "Installing PwrBuilder - Completed Successfully."
       Log-Write -LogPath $sLogFile -LineValue " "
     }
   }
 }
- 
 #>
  
 #-----------------------------------------------------------[Execution]------------------------------------------------------------
  
 Log-Start -LogPath $sLogPath -LogName $sLogName -ScriptVersion $sScriptVersion
-Install-PwrBuilder
+Install-PwrBldr
 Log-Finish -LogPath $sLogFile
