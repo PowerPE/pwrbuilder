@@ -20,7 +20,7 @@
 #-----------------------------------------------------------[Functions]------------------------------------------------------------
   
 Function Invoke-PwrBldr{
-  Param([switch]$cli, [switch]$dev)
+  Param([switch]$cli)
 #---------------------------------------------------------[Initialisations]--------------------------------------------------------
   $ErrorActionPreference = "SilentlyContinue"
  
@@ -40,20 +40,13 @@ Function Invoke-PwrBldr{
 
   Begin{
     Log-Start -LogPath $sLogPath -LogName $sLogName -ScriptVersion $sScriptVersion
-    Log-Write -LogPath $sLogFile -LineValue "Invoking PwrBuilder"
+    Log-Write -LogPath $sLogFile -LineValue "PwrBuilder"
   }
   
   Process{
     Try{
-        Install-PwrBldrDirectories
-        switch ($cli)
-            {
-                $True {
-                   $PwrBldrCliSession = Initialize-PwrBldrCliSession
-                }
-
-                $False {}
-            }
+        Initialize-PwrBldrCliSession
+              
 
     }
     
@@ -65,28 +58,35 @@ Function Invoke-PwrBldr{
   
   End{
     If($?){
-      Log-Write -LogPath $sLogFile -LineValue "Invoking PwrBuilder - Completed Successfully."
+      Log-Write -LogPath $sLogFile -LineValue "PwrBuilder - Completed Successfully."
       Log-Write -LogPath $sLogFile -LineValue " "
       Log-Finish -LogPath $sLogFile
     }
   }
 }
 
-Function Initialize-PwrBldrSession {
+Function Initialize-PwrBldrCliSession {
   Begin{
-    Log-Write -LogPath $sLogFile -LineValue "Initialize PwrBldr Session"
+    Log-Write -LogPath $sLogFile -LineValue "Initialize PwrBldr Session (cli)"
   }
   
   Process{
     Try{
-        switch ($cli)
-            {
-                $True {
-                    Initialize-PwrBldrCliSession
-                }
+        if (-not (Test-Path "$PwrBldrModuleRoot\Session\pwrbldr.pssc")) {
+            Log-Write -LogPath $sLogFile -LineValue "PwrBldr Session - Creating Session Configuration File"
+            New-PSSessionConfigurationFile -Path "$PwrBldrModuleRoot\Session\pwrbldr.pssc" -SessionType Empty -LanguageMode NoLanguage
+            Log-Write -LogPath $sLogFile -LineValue "Configuration File: $PwrBldrModuleRoot\Session\pwrbldr.pssc"
+        } 
+        
+        Log-Write -LogPath $sLogFile -LineValue "Validating Configuration File"
+        Test-PSSessionConfigurationFile "$PwrBldrModuleRoot\Session\pwrbldr.pssc"
+        Log-Write -LogPath $sLogFile -LineValue "Validating Configuration File - Completed Successfully."
+        
+        Register-PSSessionConfiguration -Path "$PwrBldrModuleRoot\Session\pwrbldr.pssc" -Name PwrBldrSessionConfig -AccessMode Remote -Force
 
-                $False {}
-            }
+        New-PSSession -ConfigurationName PwrBldrSessionCOnfig -EnableNetworkAccess -Name PwrBldrRootSession -ApplicationName PwrBldr
+        Enter-PSSession -Name PwrBldrRootSession
+        
        
     }
     
@@ -98,9 +98,8 @@ Function Initialize-PwrBldrSession {
   
   End{
     If($?){
-      Log-Write -LogPath $sLogFile -LineValue "Invoking PwrBuilder - Completed Successfully."
+      Log-Write -LogPath $sLogFile -LineValue "PwrBuilder Session (cli) - Completed Successfully."
       Log-Write -LogPath $sLogFile -LineValue " "
     }
   }
 }
-#> 

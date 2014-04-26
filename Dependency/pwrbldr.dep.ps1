@@ -1,7 +1,7 @@
 #requires -version 3
 <#
 .SYNOPSIS
-  PwrBuilder PsBabushka
+  PwrBuilder 
  
 .DESCRIPTION
   PwrBuilder PsBabushka Installer
