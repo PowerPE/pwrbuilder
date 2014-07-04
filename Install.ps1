@@ -14,49 +14,51 @@
 #>
  
 #---------------------------------------------------------[Initialisations]--------------------------------------------------------
-$ErrorActionPreference = "Stop"
+$ErrorActionPreference = "Continue"
        
 #----------------------------------------------------------[Declarations]----------------------------------------------------------
+#---[Settings - Module]---
+$pwrinst_PSModule = "pwrbldr"
+$pwrinst_PSModuleUrl = "https://github.com/PowerPE/pwrbuilder/archive/master.zip"
 
+#---[Settings - Installer]---
+$pwrinst_InstTitle = "Installing $pwrinst_PSModule ..."
+$pwrinst_InstComplete = "Installing $pwrinst_PSModule Complete"
 
-#-----------------------------------------------------------[Functions]------------------------------------------------------------
-  
-Function Install-PwrBldr{
+#-----------------------------------------------------------[Functions]-----------------------------------------------------
+Function Invoke-Install{
   Param()
-  
+
   Begin{
-    
-    Write-Output "Installing PwrBuilder (PwrBldr)..."
+    Write-Host $pwrinst_InstTitle
   }
-  
+
   Process{
     Try{
       if (-not (Get-Command -Module 'PsGet')) {
         Echo 'Installing/Updating PsGet...'
         (new-object Net.WebClient).DownloadString("http://psget.net/GetPsGet.ps1") | iex
       }
-      if (-not (Get-Command -Module 'PwrBldr')) {
-        Install-Module -ModuleUrl https://github.com/PowerPE/pwrbuilder/archive/master.zip -ModuleName PwrBldr
+      if (-not (Get-Command -Module $pwrinst_PSModule)) {
+        Install-Module -ModuleUrl $pwrinst_PSModuleUrl -ModuleName $pwrinst_PSModule
       }
-    
     }
     
     Catch{
-      Write-Error -LogPath $sLogFile -ErrorDesc $_.Exception -ExitGracefully $True
+      Write-Error `$_.Exception
       Break
     }
   }
-  
+
   End{
     If($?){
-      Write-Output -LogPath $sLogFile -LineValue "Installing PwrBuilder - Completed Successfully."
-      Write-Output -LogPath $sLogFile -LineValue " "
+      Write-Output $pwrinst_InstComplete
+      Write-Output " "
     }
   }
 }
-#>
- 
+   
 #-----------------------------------------------------------[Execution]------------------------------------------------------------
  
-Install-PwrBldr
-Install-PwrBldrDeps
+Invoke-Expression $pwrinst_dyninst
+#Invoke-Expression "Install-$pwrinst_PSModule`Deps"
