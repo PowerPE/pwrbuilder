@@ -34,6 +34,8 @@ Function Pwrbldr-XmlConfig{
         if ($XMLChildNodes -ne $null) {
             $XMLChildNodes | Invoke-XmlCmdlet 
         }
+
+        Echo "Hi Im the output of the <config> tag!!!"
     }
     
     Catch{

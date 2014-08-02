@@ -44,7 +44,7 @@ Function New-PwrBldr{
   Process{
     Try{
     
-        $Global:PwrBldr = $pwrUserConfig | Write-Output
+       $pwrUserConfig | Write-Output
         
     }
     

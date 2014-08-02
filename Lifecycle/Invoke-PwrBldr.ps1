@@ -33,7 +33,7 @@ Function Invoke-PwrBldr{
     Try{
 
         $PwrBldrXML | Select-Xml -XPath "./*" | ForEach-Object {
-
+        
             $_.Node | Invoke-XmlCmdlet
             
         }
