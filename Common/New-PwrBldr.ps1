@@ -18,18 +18,34 @@
 Function New-PwrBldr{
 
   Param(
-    [Parameter(Mandatory=$true,ValueFromPipeline=$true)]
-    [xml] $PwrBldrList
   )
 
   Begin{
+
+    $ErrorActionPreference = "Continue"
+
+    $pwrUserConfigPath = "$env:USERPROFILE\pwrbuilder\config.xml"
+
+    if ((Test-Path $pwrUserConfigPath) -eq $false) {
+
+        $configTemplate = @"
+<pwrbldr version="0.1.0">
+ <config>
+ </config>
+</pwrbldr>
+"@ | Out-File $pwrUserConfigPath
+
+    }
+
+    [xml] $pwrUserConfig = Get-Content $pwrUserConfigPath
 
   }
   
   Process{
     Try{
     
-
+        $Global:PwrBldr = $pwrUserConfig | Write-Output
+        
     }
     
     Catch{

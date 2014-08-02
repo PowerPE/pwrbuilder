@@ -15,11 +15,11 @@
 #>
  
   
-Function Invoke-PwrBldr{
+Function Invoke-XmlCmdlet{
 
   Param(
     [Parameter(Mandatory=$true,ValueFromPipeline=$true)]
-    [xml] $PwrBldrXML
+    [System.Xml.XmlElement[]] $XMLNodes
 
   )
 
@@ -32,14 +32,23 @@ Function Invoke-PwrBldr{
   Process{
     Try{
 
-        $PwrBldrXML | Select-Xml -XPath "./*" | ForEach-Object {
-
-            $TagCommand = $_.Node.Name
-
-            if ($_.Node.HasChildNodes -eq $true) {
-                $_.Node.InnerXml | Invoke-PwrBldr 
-            }
+        $XMLNodes | Select-Xml -XPath "./*" | ForEach-Object {
             
+            $Command = "Pwrbldr-Xml$($_.Node.Name)"
+            
+            $CommandArgument = ,$_.Node.ChildNodes
+            
+            try {
+            
+                Invoke-Expression "$Command $CommandArgument"
+
+            }
+
+            Catch {
+
+                $Error[0]
+
+            }
             
         }
 

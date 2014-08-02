@@ -1,10 +1,10 @@
 #requires -version 3
 <#
 .SYNOPSIS
-  Start PwrBuilder
+  Invoke PwrBuilder
  
 .DESCRIPTION
-  Starts PwrBuilder
+  Runs PwrBuilder
    
  
 .NOTES
@@ -15,21 +15,25 @@
 #>
  
   
-Function Start-PwrBldr{
+Function Pwrbldr-XmlConfig{
 
   Param(
-
+    [Parameter(ValueFromPipeline=$true)]
+    [System.Xml.XmlElement] $XMLChildNodes = $null
   )
 
   Begin{
+
+    
 
   }
   
   Process{
     Try{
-    
-        New-PwrBldr | Invoke-PwrBldr
 
+        if ($XMLChildNodes -ne $null) {
+            $XMLChildNodes | Invoke-XmlCmdlet 
+        }
     }
     
     Catch{

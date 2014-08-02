@@ -34,12 +34,7 @@ Function Invoke-PwrBldr{
 
         $PwrBldrXML | Select-Xml -XPath "./*" | ForEach-Object {
 
-            $TagCommand = $_.Node.Name
-
-            if ($_.Node.HasChildNodes -eq $true) {
-                $_.Node.InnerXml | Invoke-PwrBldr 
-            }
-            
+            $_.Node | Invoke-XmlCmdlet
             
         }
 
