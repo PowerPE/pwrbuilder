@@ -40,8 +40,8 @@ Function Invoke-XmlCmdlet{
             
             try {
             
-                Invoke-Expression "$Command $CommandArgument"
-
+                Invoke-Expression "$Command $CommandArgument" -OutVariable $CmdletOutput
+                $CmdletOutput
             }
 
             Catch {

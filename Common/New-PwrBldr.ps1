@@ -24,6 +24,8 @@ Function New-PwrBldr{
 
     $ErrorActionPreference = "Continue"
 
+    [string] $Global:PwrBldrInMemoryExpression = $null
+
     $pwrUserConfigPath = "$env:USERPROFILE\pwrbuilder\config.xml"
 
     if ((Test-Path $pwrUserConfigPath) -eq $false) {
@@ -37,13 +39,14 @@ Function New-PwrBldr{
 
     }
 
-    [xml] $pwrUserConfig = Get-Content $pwrUserConfigPath
 
   }
   
   Process{
     Try{
     
+       [xml] $pwrUserConfig = Get-Content $pwrUserConfigPath
+
        $pwrUserConfig | Write-Output
         
     }

@@ -25,7 +25,7 @@ Function Invoke-PwrBldr{
 
   Begin{
 
-    
+    [string] $scriptContent = $null
 
   }
   
@@ -34,14 +34,18 @@ Function Invoke-PwrBldr{
 
         $PwrBldrXML | Select-Xml -XPath "./*" | ForEach-Object {
         
-            $_.Node | Invoke-XmlCmdlet
+            $_.Node | Invoke-XmlCmdlet -OutVariable $CmdletOutput
+            $CmdletOutput
+            
             
         }
+
+        Invoke-Expression "$scriptContent"
 
     }
     
     Catch{
-      Break
+      $Error[0]
     }
   }
   

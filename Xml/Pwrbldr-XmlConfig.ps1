@@ -35,7 +35,7 @@ Function Pwrbldr-XmlConfig{
             $XMLChildNodes | Invoke-XmlCmdlet 
         }
 
-        Echo "Hi Im the output of the <config> tag!!!"
+        Write-Output "Hi Im the output of the <config> tag!!!"
     }
     
     Catch{
