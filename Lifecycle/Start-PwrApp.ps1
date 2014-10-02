@@ -25,33 +25,35 @@
   <Example goes here. Repeat this attribute for more than one example>
 #>
 
-Function Start-pwrbldr{
+Function Start-PwrApp{
   Param(
     [Parameter(
-        Position=0,
-        Mandatory=$true)
+        Position=0)
     ]
     [Alias('Config')]
-    [System.Xml.XmlElement[]] $pwrconfig)
+    [string] $configname = 'pwrbldr')
 
   Begin {
-   
-    $components = {
 
-      $_.Name
+    $config = Get-PwrConfig $configname
 
+    $engines = {
+    
+      $engineflow = Get-Command "Start-$($_.Name)"
 
+      Invoke-AsWorkflow -CommandName $engineflow
+     
     }
 
   }
   
   Process {
 
-    $pwrconfig.ChildNodes | ForEach-Object -Process $components
-    
+    $config.ChildNodes | ForEach-Object -Process $engines
+
   }
   
   
 }
 
-Export-ModuleMember -Function "Start-PwrBldr"
+Export-ModuleMember -Function "Start-PwrApp"

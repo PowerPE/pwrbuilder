@@ -25,33 +25,27 @@
   <Example goes here. Repeat this attribute for more than one example>
 #>
 
-Function Start-pwrbldr{
+Function Invoke-PwrDepManager{
   Param(
     [Parameter(
         Position=0,
         Mandatory=$true)
     ]
     [Alias('Config')]
-    [System.Xml.XmlElement[]] $pwrconfig)
+    [xml] $pwrdeps)
 
   Begin {
-   
-    $components = {
 
-      $_.Name
+    $pwrdeps
 
-
-    }
 
   }
   
   Process {
 
-    $pwrconfig.ChildNodes | ForEach-Object -Process $components
+    
     
   }
   
   
 }
-
-Export-ModuleMember -Function "Start-PwrBldr"

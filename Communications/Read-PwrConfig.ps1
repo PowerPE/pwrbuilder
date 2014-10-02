@@ -25,33 +25,30 @@
   <Example goes here. Repeat this attribute for more than one example>
 #>
 
-Function Start-pwrbldr{
+Function Read-PwrConfig{
   Param(
     [Parameter(
-        Position=0,
-        Mandatory=$true)
+        Position=0, 
+        Mandatory=$true, 
+        ValueFromPipeline=$true)
     ]
-    [Alias('Config')]
-    [System.Xml.XmlElement[]] $pwrconfig)
-
-  Begin {
-   
-    $components = {
-
-      $_.Name
-
-
-    }
-
+    [Alias('Path')]
+    [string] $filepath
+  )
+  
+  Begin{
+    [xml] $pwrconfig = New-PwrConfig
   }
   
-  Process {
-
-    $pwrconfig.ChildNodes | ForEach-Object -Process $components
+  Process{
     
+    $pwrconfig.Load($filepath)
+    Write-Output $pwrconfig
+
   }
   
-  
+  End{
+  }
 }
 
-Export-ModuleMember -Function "Start-PwrBldr"
+Export-ModuleMember -Function "Read-PwrConfig"

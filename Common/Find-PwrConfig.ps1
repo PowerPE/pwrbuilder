@@ -25,33 +25,40 @@
   <Example goes here. Repeat this attribute for more than one example>
 #>
 
-Function Start-pwrbldr{
+Function Find-PwrConfig{
   Param(
     [Parameter(
-        Position=0,
-        Mandatory=$true)
+        Position=0, 
+        Mandatory=$true, 
+        ValueFromPipeline=$true,
+        ValueFromPipelineByPropertyName=$true)
     ]
     [Alias('Config')]
-    [System.Xml.XmlElement[]] $pwrconfig)
+    [string] $pwrconfig
+  )
+  
+  Begin{
 
-  Begin {
-   
-    $components = {
+    [string] $path = "$env:ProgramData\pwrbldr\config\$pwrconfig.xml"
 
-      $_.Name
+  }
+  
+  Process{
 
+    if (Test-Path $path) {
+
+      Write-Output $path
+
+    } else {
+
+      Write-Error "Config file $path does not exists."
 
     }
 
   }
   
-  Process {
-
-    $pwrconfig.ChildNodes | ForEach-Object -Process $components
-    
+  End{
   }
-  
-  
 }
 
-Export-ModuleMember -Function "Start-PwrBldr"
+Export-ModuleMember -Function "Find-PwrConfig"
