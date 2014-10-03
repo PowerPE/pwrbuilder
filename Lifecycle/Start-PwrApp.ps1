@@ -39,10 +39,13 @@ Function Start-PwrApp{
 
     $engines = {
     
-      $engineflow = Get-Command "Start-$($_.Name)"
-
-      Invoke-AsWorkflow -CommandName $engineflow
-     
+      $enginecmd = "Start-$($_.Name)"
+      
+      $engineargs = @{"config"=$_}
+      
+      $enginexp = "$enginecmd @engineargs"
+    
+      Invoke-Expression $enginexp
     }
 
   }

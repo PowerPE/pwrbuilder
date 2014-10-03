@@ -38,7 +38,13 @@ Function Start-pwrbldr{
    
     $components = {
 
-      $_.Name
+      $componentcmd = "Invoke-$($_.Name)"
+      
+      $componentargs = @{"config"=$_}
+      
+      $componentexp = "$componentcmd @componentargs"
+    
+      Invoke-Expression $componentexp
 
 
     }
