@@ -25,7 +25,7 @@
   <Example goes here. Repeat this attribute for more than one example>
 #>
 
-Function Start-PwrApp{
+Function Start-App{
   Param(
     [Parameter(
         Position=0)
@@ -58,5 +58,3 @@ Function Start-PwrApp{
   
   
 }
-
-Export-ModuleMember -Function "Start-PwrApp"

@@ -25,7 +25,7 @@
   <Example goes here. Repeat this attribute for more than one example>
 #>
 
-Function Find-PwrConfig{
+Function Find-Config{
   Param(
     [Parameter(
         Position=0, 
@@ -60,5 +60,3 @@ Function Find-PwrConfig{
   End{
   }
 }
-
-Export-ModuleMember -Function "Find-PwrConfig"

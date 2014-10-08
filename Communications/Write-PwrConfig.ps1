@@ -25,7 +25,7 @@
   <Example goes here. Repeat this attribute for more than one example>
 #>
 
-Function Write-PwrConfig{
+Function Write-Config{
   Param(
     [Parameter(
         Position=0, 
@@ -56,5 +56,3 @@ Function Write-PwrConfig{
   End{
   }
 }
-
-Export-ModuleMember -Function "Write-PwrConfig"

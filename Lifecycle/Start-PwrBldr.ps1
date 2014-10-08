@@ -25,7 +25,7 @@
   <Example goes here. Repeat this attribute for more than one example>
 #>
 
-Function Start-pwrbldr{
+Function Start-Bldr{
   Param(
     [Parameter(
         Position=0,
@@ -59,5 +59,3 @@ Function Start-pwrbldr{
   
   
 }
-
-Export-ModuleMember -Function "Start-PwrBldr"

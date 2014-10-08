@@ -25,7 +25,7 @@
   <Example goes here. Repeat this attribute for more than one example>
 #>
 
-Function Read-PwrConfig{
+Function Read-Config{
   Param(
     [Parameter(
         Position=0, 
@@ -50,5 +50,3 @@ Function Read-PwrConfig{
   End{
   }
 }
-
-Export-ModuleMember -Function "Read-PwrConfig"
