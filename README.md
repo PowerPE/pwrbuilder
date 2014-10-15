@@ -1,4 +1,4 @@
 pwrbuilder
 ==========
 
-PowerPE Builder - WinPE Builder written in PowerShell
+pwrbuilder - Powershell App Builder for those in the *know*
