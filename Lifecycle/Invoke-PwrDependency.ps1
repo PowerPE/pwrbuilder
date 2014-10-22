@@ -40,10 +40,10 @@ Function Invoke-PwrDependency{
 
       if ([string]::IsNullOrWhiteSpace($_.Check)) {
 
-        Write-Verbose "Dependency Check $($_.Name): No Check ScriptBlock"
+        Write-Warning "Dependency Check $($_.Name): No Check ScriptBlock"
 
       } else {
-
+      
         if (iex ($ExecutionContext.InvokeCommand.ExpandString($_.Check))) {
 
           Write-Verbose "Dependency Check $($_.Name): Passed"
