@@ -39,7 +39,7 @@ Function Start-PwrApp{
 
     $engines = {
     
-      $enginecmd = "Start-$($_.Name)"
+      $enginecmd = "Start-$($config.DocumentElement.Name)"
       
       $engineargs = @{"config"=$_}
       

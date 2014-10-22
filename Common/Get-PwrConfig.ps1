@@ -42,7 +42,7 @@ Function Get-PwrConfig{
   
   Process{
 
-     Find-PwrConfig $pwrconfig | Read-PwrConfig
+     Find-PwrConfig $pwrconfig -ErrorAction Stop | Read-PwrConfig
 
   }
   

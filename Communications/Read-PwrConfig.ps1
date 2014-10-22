@@ -37,12 +37,11 @@ Function Read-PwrConfig{
   )
   
   Begin{
-    [xml] $pwrconfig = New-PwrConfig
   }
   
   Process{
     
-    $pwrconfig.Load($filepath)
+    $pwrconfig = [xml](Get-Content $filepath)
     Write-Output $pwrconfig
 
   }
