@@ -25,7 +25,7 @@
   <Example goes here. Repeat this attribute for more than one example>
 #>
 
-Function Find-Config{
+Function Find-PwrConfig{
   Param(
     [Parameter(
         Position=0, 
@@ -44,17 +44,18 @@ Function Find-Config{
   }
   
   Process{
-
+   
     if (Test-Path $path) {
 
       Write-Output $path
 
-    } else {
+    }
+    Else {
 
       Write-Error "Config file $path does not exists."
-
+      
     }
-
+    
   }
   
   End{

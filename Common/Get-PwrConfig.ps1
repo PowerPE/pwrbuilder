@@ -25,7 +25,7 @@
   <Example goes here. Repeat this attribute for more than one example>
 #>
 
-Function Get-Config{
+Function Get-PwrConfig{
   Param(
     [Parameter(
         Position=0, 
@@ -42,12 +42,11 @@ Function Get-Config{
   
   Process{
 
-     $configfile = Find-PwrConfig $pwrconfig
-
-     Read-PwrConfig -filepath $configfile
+     Find-PwrConfig $pwrconfig | Read-PwrConfig
 
   }
   
   End{
+   
   }
 }

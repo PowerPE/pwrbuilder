@@ -25,7 +25,7 @@
   <Example goes here. Repeat this attribute for more than one example>
 #>
 
-Function Start-App{
+Function Start-PwrApp{
   Param(
     [Parameter(
         Position=0)

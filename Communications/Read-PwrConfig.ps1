@@ -25,7 +25,7 @@
   <Example goes here. Repeat this attribute for more than one example>
 #>
 
-Function Read-Config{
+Function Read-PwrConfig{
   Param(
     [Parameter(
         Position=0, 

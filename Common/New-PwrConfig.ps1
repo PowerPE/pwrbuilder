@@ -25,7 +25,7 @@
   <Example goes here. Repeat this attribute for more than one example>
 #>
 
-Function New-Config{
+Function New-PwrConfig{
   Param()
   
   Begin{

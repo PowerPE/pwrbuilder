@@ -25,7 +25,7 @@
   <Example goes here. Repeat this attribute for more than one example>
 #>
 
-Function Invoke-Dependency{
+Function Invoke-PwrDependency{
   Param(
     [Parameter(
         Position=0,
