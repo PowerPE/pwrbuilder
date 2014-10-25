@@ -35,27 +35,70 @@ Function Invoke-PwrDsc{
     [System.Xml.XmlElement[]] $pwrdscsettings)
 
   Begin {
-    [xml]$dscconfig = New-Object Xml
 
-    $configchild = {
+    [xml]$dscconfigdoc = New-Object Xml
 
-      $dscconfig.AppendChild($dscconfig.ImportNode($_, $true)) | Out-Null
+    $dscconfigdata = @{
+      AllNodes = @();
+    }
+
+    $xmlconfigchild = {
+
+      $dscconfigdoc.AppendChild($dscconfigdoc.ImportNode($_, $true)) | Out-Null
 
     }
+
+    $xmlconfigurationdata = {
     
+      $_.Node.ChildNodes | ForEach-Object -Process {
+      
+        $confighashtable = @{}
+       
+        $_ | Select-Xml './*' | ForEach-Object -Process {
+          
+          $confighashtable.Set_Item($_.Node.Name,$_.Node.('#text'))
+
+        }
+
+        $dscconfigdata.Set_Item($_.Name, $confighashtable)
+      
+    }
+
+   }
+
+   $xmlconfiguration = {
+     $dynamicblock = @"
+       Configuration $($_.Node.Name)
+         {
+
+           
+
+         }
+"@
+
+   }
+
   }
   
   Process {
 
-    $pwrdscsettings | ForEach-Object -Process $configchild
+    Write-Verbose "Convert pwrdsc XmlElement[] to XmlDocument"
+    $pwrdscsettings | ForEach-Object -Process $xmlconfigchild
   
-    $dscconfig
-  
+    Write-Verbose "Convert configurationdata XmlNode to hashtable"
+    $dscconfigdoc | Select-Xml '/pwrdsc/configurationdata' | ForEach-Object -Process $xmlconfigurationdata
+
+    Write-Verbose "Generate DSC configurations from configuration XmlNode"
+    $dscconfigdoc | Select-Xml '/pwrdsc/configuration' | ForEach-Object -Process $xmlconfiguration
+    
+    
     Configuration LocalConfiguration
     {
 
       Node localhost
       {
+
+        
 
       }
 
